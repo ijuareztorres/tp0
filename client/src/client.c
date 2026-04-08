@@ -9,7 +9,7 @@ int main(void)
 	char* puerto;
 	char* valor;
 
-	t_log* logger;
+	t_log* logger = log_create("tp0.log", "CLIENTE", true, LOG_LEVEL_INFO);
 	t_config* config;
 
 	/* ---------------- LOGGING ---------------- */
@@ -18,6 +18,7 @@ int main(void)
 
 	// Usando el logger creado previamente
 	// Escribi: "Hola! Soy un log"
+	log_info(logger, "Hola! Soy un log");
 
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
@@ -47,6 +48,7 @@ int main(void)
 	paquete(conexion);
 
 	terminar_programa(conexion, logger, config);
+	//log_destroy(logger);
 
 	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
 	// Proximamente
@@ -97,4 +99,5 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
 	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
+	log_destroy(logger);
 }
