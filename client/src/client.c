@@ -1,5 +1,5 @@
 #include "client.h"
-
+#include <commons/config.h>
 int main(void)
 {
 	/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
@@ -9,8 +9,8 @@ int main(void)
 	char* puerto;
 	char* valor;
 
-	t_log* logger = log_create("tp0.log", "CLIENTE", true, LOG_LEVEL_INFO);
-	t_config* config;
+	t_log* logger; //log_create("tp0.log", "CLIENTE", true, LOG_LEVEL_INFO);
+	t_config* config; //config_create("cliente.config")
 
 	/* ---------------- LOGGING ---------------- */
 
@@ -53,12 +53,14 @@ int main(void)
 	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
 	// Proximamente
 }
-
 t_log* iniciar_logger(void)
 {
-	t_log* nuevo_logger;
-
-	return nuevo_logger;
+	t_log* logger;
+	if((logger = log_create("tp0.log", "TP0", 1, LOG_LEVEL_INFO)) ==NULL) {
+		printf("No pudo crear el logger\n");
+		exit(1);
+	}
+	return logger;
 }
 
 t_config* iniciar_config(void)
@@ -99,5 +101,7 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
 	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
-	log_destroy(logger);
+	if(logger!=NULL) {
+		log_destroy(logger);
+	}
 }
