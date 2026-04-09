@@ -65,9 +65,12 @@ t_log* iniciar_logger(void)
 
 t_config* iniciar_config(void)
 {
-	t_config* nuevo_config;
-
-	return nuevo_config;
+	t_config* config;
+	if((config= config_create("cliente.config")) == NULL) {
+		printf("No pudo leer la config\n");
+		exit(2);
+	}
+	return config;
 }
 
 void leer_consola(t_log* logger)
@@ -103,5 +106,9 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
 	if(logger!=NULL) {
 		log_destroy(logger);
+	}
+
+	if(config!=NULL) {
+		config_destroy(config);
 	}
 }
