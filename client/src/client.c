@@ -1,5 +1,8 @@
 #include "client.h"
 #include <commons/config.h>
+#include <readline/readline.h>
+#include <string.h>
+
 int main(void)
 {
 	/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
@@ -81,9 +84,14 @@ void leer_consola(t_log* logger)
 	leido = readline("> ");
 
 	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
-
-
+	while (leido!=NULL && strcmp (leido, "") !=0) {
+		log_info(logger,"Leí de consola: %s", leido);
+		free(leido);
+		leido = readline("> ");
+	}
+ 
 	// ¡No te olvides de liberar las lineas antes de regresar!
+	free(leido);
 
 }
 
