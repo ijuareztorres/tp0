@@ -1,4 +1,5 @@
 #include "client.h"
+#include "utils.h"
 #include <commons/config.h>
 #include <readline/readline.h>
 #include <string.h>
@@ -30,10 +31,9 @@ int main(void)
 
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
-
+	valor = config_get_string_value(config, "CLAVE");
 	// Loggeamos el valor de config
-
-
+	log_info(logger, "Leí la clave: %s", valor);
 	/* ---------------- LEER DE CONSOLA ---------------- */
 
 	leer_consola(logger);
@@ -46,7 +46,7 @@ int main(void)
 	conexion = crear_conexion(ip, puerto);
 
 	// Enviamos al servidor el valor de CLAVE como mensaje
-
+	enviar_mensaje(valor, conexion);
 	// Armamos y enviamos el paquete
 	paquete(conexion);
 
@@ -100,12 +100,20 @@ void paquete(int conexion)
 	// Ahora toca lo divertido!
 	char* leido;
 	t_paquete* paquete;
+	paquete=crear_paquete();
 
+	leido = readline("> ");
+	while (leido != NULL && strcmp(leido, "") !=0 ){
+		agregar_a_paquete(paquete,leido,strlen(leido)+1);
+		free(leido);
+		leido = readline("> ");
+	}
+	free(leido);
 	// Leemos y esta vez agregamos las lineas al paquete
 
-
+	enviar_paquete(paquete, conexion);
 	// ¡No te olvides de liberar las líneas y el paquete antes de regresar!
-	
+	eliminar_paquete(paquete);
 }
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
